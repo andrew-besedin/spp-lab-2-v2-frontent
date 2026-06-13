@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getCards, getUsers, updateCard } from "@/lib/api";
 import { Card, User } from "@/lib/types";
 import { COLUMN_ORDER, COLUMN_LABELS, ColumnStatus, canTransition } from "@/lib/columns";
@@ -9,10 +9,14 @@ import CreateCardModal from "./CreateCardModal";
 import CardDetailModal from "./CardDetailModal";
 import styles from "./Board.module.scss";
 
-export default function Board() {
-  const [cards, setCards] = useState<Card[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+interface Props {
+  initialCards: Card[];
+  initialUsers: User[];
+}
+
+export default function Board({ initialCards, initialUsers }: Props) {
+  const [cards, setCards] = useState<Card[]>(initialCards);
+  const [users, setUsers] = useState<User[]>(initialUsers);
   const [error, setError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
@@ -22,13 +26,6 @@ export default function Board() {
     if (cardsRes.success) setCards(cardsRes.data);
     if (usersRes.success) setUsers(usersRes.data);
   }
-
-  useEffect(() => {
-    (async () => {
-      await refresh();
-      setLoading(false);
-    })();
-  }, []);
 
   function showError(message: string) {
     setError(message);
@@ -51,10 +48,6 @@ export default function Board() {
     } else {
       showError(String(res.data));
     }
-  }
-
-  if (loading) {
-    return <div className={styles.loading}>Loading board…</div>;
   }
 
   return (

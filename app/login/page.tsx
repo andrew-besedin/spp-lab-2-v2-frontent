@@ -1,20 +1,14 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
+import { redirect } from "next/navigation";
+import { getServerUser } from "@/lib/server-api";
 import { githubLoginUrl } from "@/lib/api";
 import styles from "./page.module.scss";
 
-export default function LoginPage() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
+export default async function LoginPage() {
+  const userRes = await getServerUser();
 
-  useEffect(() => {
-    if (!loading && user) {
-      router.replace("/");
-    }
-  }, [loading, user, router]);
+  if (userRes.success && userRes.data) {
+    redirect("/");
+  }
 
   return (
     <div className={styles.page}>
