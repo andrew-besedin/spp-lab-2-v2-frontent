@@ -1,7 +1,13 @@
+import axios from "axios";
 import { cookies } from "next/headers";
 import { Card, User } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+
+const client = axios.create({
+    baseURL: `${API_URL}/api`,
+    validateStatus: () => true,
+});
 
 interface ApiResponse<T> {
     success: boolean;
@@ -13,17 +19,16 @@ async function serverApiFetch<T>(path: string): Promise<ApiResponse<T>> {
     const token = cookieStore.get("token")?.value;
 
     try {
-        const res = await fetch(`${API_URL}/api${path}`, {
+        const res = await client.get<ApiResponse<T>>(path, {
             headers: token ? { Cookie: `token=${token}` } : {},
-            cache: "no-store",
         });
-        return await res.json();
+        return res.data;
     } catch {
         return { success: false, data: null as T };
     }
 }
 
-export function  getServerUser() {
+export function getServerUser() {
     return serverApiFetch<User | null>("/auth/me");
 }
 

@@ -1,31 +1,37 @@
+import axios from "axios";
 import { Card, Comment, Priority, User } from "./types";
 import { ColumnStatus } from "./columns";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+
+const client = axios.create({
+    baseURL: `${API_URL}/api`,
+    withCredentials: true,
+    headers: { "Content-Type": "application/json" },
+    validateStatus: () => true,
+});
 
 interface ApiResponse<T> {
     success: boolean;
     data: T;
 }
 
-async function apiFetch<T>(path: string, options?: RequestInit): Promise<ApiResponse<T>> {
-    let res: Response;
-
+async function apiFetch<T>(path: string, options?: { method?: string; body?: unknown }): Promise<ApiResponse<T>> {
     try {
-        res = await fetch(`${API_URL}/api${path}`, {
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            ...options,
+        const res = await client.request<ApiResponse<T>>({
+            url: path,
+            method: options?.method ?? "GET",
+            data: options?.body,
         });
+
+        if (res.status === 401) {
+            return { success: false, data: null as T };
+        }
+
+        return res.data;
     } catch {
         return { success: false, data: null as T };
     }
-
-    if (res.status === 401) {
-        return { success: false, data: null as T };
-    }
-
-    return res.json();
 }
 
 export function getMe() {
@@ -54,7 +60,7 @@ export interface CreateCardInput {
 export function createCard(input: CreateCardInput) {
     return apiFetch<Card>("/cards", {
         method: "POST",
-        body: JSON.stringify(input),
+        body: input,
     });
 }
 
@@ -70,14 +76,14 @@ export interface UpdateCardInput {
 export function updateCard(id: number, input: UpdateCardInput) {
     return apiFetch<Card>(`/cards/${id}`, {
         method: "PATCH",
-        body: JSON.stringify(input),
+        body: input,
     });
 }
 
 export function addComment(cardId: number, body: string) {
     return apiFetch<Comment>(`/cards/${cardId}/comments`, {
         method: "POST",
-        body: JSON.stringify({ body }),
+        body: { body },
     });
 }
 
