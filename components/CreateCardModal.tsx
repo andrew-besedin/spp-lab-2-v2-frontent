@@ -1,0 +1,56 @@
+"use client";
+
+import { useState } from "react";
+import { createCard } from "@/lib/api";
+import { User } from "@/lib/types";
+import Modal from "./Modal";
+import CardForm, { CardFormValues } from "./CardForm";
+import styles from "./CardDetailModal.module.scss";
+
+interface Props {
+  users: User[];
+  onClose: () => void;
+  onCreated: () => void;
+}
+
+export default function CreateCardModal({ users, onClose, onCreated }: Props) {
+  const [values, setValues] = useState<CardFormValues>({
+    title: "",
+    description: "",
+    priority: "medium",
+    assigneeId: null,
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  async function handleSubmit() {
+    if (!values.title.trim()) {
+      setError("Title is required");
+      return;
+    }
+
+    setSaving(true);
+    const res = await createCard(values);
+    setSaving(false);
+
+    if (res.success) {
+      onCreated();
+    } else {
+      setError(String(res.data));
+    }
+  }
+
+  return (
+    <Modal onClose={onClose}>
+      <h2>New card</h2>
+      <CardForm values={values} onChange={setValues} users={users} />
+      {error && <p className={styles.error}>{error}</p>}
+      <div className={styles.actions}>
+        <button onClick={onClose}>Cancel</button>
+        <button onClick={handleSubmit} disabled={saving}>
+          Create
+        </button>
+      </div>
+    </Modal>
+  );
+}

@@ -1,0 +1,24 @@
+.board {
+  padding: 16px;
+}
+
+.columns {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  overflow-x: auto;
+}
+
+.loading {
+  padding: 40px;
+  text-align: center;
+}
+
+.error {
+  background: #f44336;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
