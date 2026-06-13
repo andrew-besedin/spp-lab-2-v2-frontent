@@ -1,6 +1,7 @@
 "use client";
 
 import { DragEvent } from "react";
+import Image from "next/image";
 import { Card } from "@/lib/types";
 import styles from "./CardItem.module.scss";
 
@@ -26,7 +27,7 @@ export default function CardItem({ card, onClick }: { card: Card; onClick: () =>
         </span>
         {card.assignee && (
           <span className={styles.assignee} title={card.assignee.displayName}>
-            <img src={card.assignee.avatarUrl} alt={card.assignee.displayName} />
+            <Image src={card.assignee.avatarUrl} alt={card.assignee.displayName} width={22} height={22} />
           </span>
         )}
       </div>

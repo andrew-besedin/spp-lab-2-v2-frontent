@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { getCard, updateCard, addComment } from "@/lib/api";
 import { ActivityLogEntry, Card, User } from "@/lib/types";
 import { COLUMN_ORDER, COLUMN_LABELS, canTransition, ColumnStatus } from "@/lib/columns";
@@ -150,7 +151,7 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
         {timeline.map((entry) =>
           entry.type === "comment" ? (
             <div key={`comment-${entry.item.id}`} className={styles.comment}>
-              <img src={entry.item.author.avatarUrl} alt={entry.item.author.displayName} />
+              <Image src={entry.item.author.avatarUrl} alt={entry.item.author.displayName} width={28} height={28} />
               <div>
                 <div className={styles.commentHeader}>
                   <strong>{entry.item.author.displayName}</strong>

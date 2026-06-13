@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Board from "@/components/Board";
@@ -25,7 +26,7 @@ export default function Home() {
       <header className={styles.header}>
         <h1>Kanban</h1>
         <div className={styles.user}>
-          <img src={user.avatarUrl} alt={user.displayName} />
+          <Image src={user.avatarUrl} alt={user.displayName} width={28} height={28} />
           <span>{user.displayName}</span>
           <button onClick={logout}>Logout</button>
         </div>
