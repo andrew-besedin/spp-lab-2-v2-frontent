@@ -1,3 +1,5 @@
+@use "sass:string";
+
 .page {
   --background: #fafafa;
   --foreground: #fff;
@@ -125,7 +127,7 @@ a.secondary {
 
 @media (prefers-color-scheme: dark) {
   .logo {
-    filter: invert();
+    filter: string.unquote("invert(100%)");
   }
 
   .page {
