@@ -1,5 +1,6 @@
 .board {
   padding: 16px;
+  min-width: 0;
 }
 
 .columns {
@@ -7,6 +8,7 @@
   gap: 12px;
   align-items: flex-start;
   overflow-x: auto;
+  padding-bottom: 8px;
 }
 
 .loading {
