@@ -7,7 +7,7 @@
   padding: 16px;
 }
 
-.columns {
+.board__columns {
   display: flex;
   gap: 12px;
   align-items: stretch;
@@ -17,7 +17,7 @@
   padding-bottom: 8px;
 }
 
-.error {
+.board__error {
   background: #f44336;
   color: #fff;
   padding: 8px 12px;

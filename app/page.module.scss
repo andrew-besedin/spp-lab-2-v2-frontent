@@ -5,7 +5,7 @@
   overflow: hidden;
 }
 
-.header {
+.page__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,7 +19,7 @@
   }
 }
 
-.user {
+.page__user {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -52,4 +52,3 @@
     flex-shrink: 0;
   }
 }
-

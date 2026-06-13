@@ -30,16 +30,16 @@ export default function Column({ status, title, cards, onDropCard, onCardClick, 
 
   return (
     <div className={styles.column}>
-      <div className={styles.header}>
+      <div className={styles.column__header}>
         <h2>{title}</h2>
-        <span className={styles.count}>{cards.length}</span>
+        <span className={styles.column__count}>{cards.length}</span>
         {onAddCard && (
-          <button className={styles.addButton} onClick={onAddCard} title="Add card">
+          <button className={styles.column__addButton} onClick={onAddCard} title="Add card">
             +
           </button>
         )}
       </div>
-      <div className={styles.cards} onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, cards.length)}>
+      <div className={styles.column__cards} onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, cards.length)}>
         {cards.map((card, index) => (
           <div key={card.id} onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, index)}>
             <CardItem card={card} onClick={() => onCardClick(card.id)} />

@@ -52,8 +52,8 @@ export default function Board({ initialCards, initialUsers }: Props) {
 
   return (
     <div className={styles.board}>
-      {error && <div className={styles.error}>{error}</div>}
-      <div className={styles.columns}>
+      {error && <div className={styles.board__error}>{error}</div>}
+      <div className={styles.board__columns}>
         {COLUMN_ORDER.map((status) => (
           <Column
             key={status}

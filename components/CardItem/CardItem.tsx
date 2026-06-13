@@ -19,14 +19,14 @@ export default function CardItem({ card, onClick }: { card: Card; onClick: () =>
   }
 
   return (
-    <div className={styles.card} draggable onDragStart={handleDragStart} onClick={onClick}>
-      <div className={styles.title}>{card.title}</div>
-      <div className={styles.meta}>
-        <span className={`${styles.priority} ${styles[card.priority]}`}>
+    <div className={styles.cardItem} draggable onDragStart={handleDragStart} onClick={onClick}>
+      <div className={styles.cardItem__title}>{card.title}</div>
+      <div className={styles.cardItem__meta}>
+        <span className={`${styles.cardItem__priority} ${styles[`cardItem__priority--${card.priority}`]}`}>
           {PRIORITY_LABELS[card.priority]}
         </span>
         {card.assignee && (
-          <span className={styles.assignee} title={card.assignee.displayName}>
+          <span className={styles.cardItem__assignee} title={card.assignee.displayName}>
             <Image src={card.assignee.avatarUrl} alt={card.assignee.displayName} width={22} height={22} />
           </span>
         )}

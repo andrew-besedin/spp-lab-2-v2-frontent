@@ -11,11 +11,11 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.card}>
+    <div className={styles.login}>
+      <div className={styles.login__card}>
         <h1>Kanban</h1>
         <p>Sign in to view the board</p>
-        <a className={styles.button} href={githubLoginUrl()}>
+        <a className={styles.login__button} href={githubLoginUrl()}>
           Sign in with GitHub
         </a>
       </div>

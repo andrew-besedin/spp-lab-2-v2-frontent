@@ -44,8 +44,8 @@ export default function CreateCardModal({ users, onClose, onCreated }: Props) {
     <Modal onClose={onClose}>
       <h2>New card</h2>
       <CardForm values={values} onChange={setValues} users={users} />
-      {error && <p className={styles.error}>{error}</p>}
-      <div className={styles.actions}>
+      {error && <p className={styles.createCardModal__error}>{error}</p>}
+      <div className={styles.createCardModal__actions}>
         <button onClick={onClose}>Cancel</button>
         <button onClick={handleSubmit} disabled={saving}>
           Create

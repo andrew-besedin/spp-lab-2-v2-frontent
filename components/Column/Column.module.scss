@@ -11,7 +11,7 @@
   flex: 1 0 240px;
 }
 
-.header {
+.column__header {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -28,13 +28,13 @@
   }
 }
 
-.count {
+.column__count {
   font-size: 12px;
   color: #888;
   flex-shrink: 0;
 }
 
-.addButton {
+.column__addButton {
   border: none;
   background: #2196f3;
   color: #fff;
@@ -46,7 +46,7 @@
   flex-shrink: 0;
 }
 
-.cards {
+.column__cards {
   display: flex;
   flex-direction: column;
   gap: 8px;

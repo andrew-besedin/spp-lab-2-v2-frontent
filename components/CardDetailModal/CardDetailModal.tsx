@@ -124,16 +124,16 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
 
   return (
     <Modal onClose={onClose}>
-      <div className={styles.header}>
+      <div className={styles.cardDetail__header}>
         <h2>Card #{card.id}</h2>
-        <span className={styles.status}>{COLUMN_LABELS[card.status]}</span>
+        <span className={styles.cardDetail__status}>{COLUMN_LABELS[card.status]}</span>
       </div>
 
       <CardForm values={values} onChange={setValues} users={users} />
 
-      {error && <p className={styles.error}>{error}</p>}
+      {error && <p className={styles.cardDetail__error}>{error}</p>}
 
-      <div className={styles.actions}>
+      <div className={styles.cardDetail__actions}>
         {prevStatus && canTransition(card.status, prevStatus) && (
           <button onClick={() => handleMove(prevStatus)}>← {COLUMN_LABELS[prevStatus]}</button>
         )}
@@ -146,14 +146,14 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
         <button onClick={onClose}>Close</button>
       </div>
 
-      <div className={styles.timeline}>
+      <div className={styles.cardDetail__timeline}>
         <h3>Activity &amp; comments</h3>
         {timeline.map((entry) =>
           entry.type === "comment" ? (
-            <div key={`comment-${entry.item.id}`} className={styles.comment}>
+            <div key={`comment-${entry.item.id}`} className={styles.cardDetail__comment}>
               <Image src={entry.item.author.avatarUrl} alt={entry.item.author.displayName} width={28} height={28} />
               <div>
-                <div className={styles.commentHeader}>
+                <div className={styles.cardDetail__commentHeader}>
                   <strong>{entry.item.author.displayName}</strong>
                   <span>{new Date(entry.date).toLocaleString()}</span>
                 </div>
@@ -161,7 +161,7 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
               </div>
             </div>
           ) : (
-            <div key={`activity-${entry.item.id}`} className={styles.activity}>
+            <div key={`activity-${entry.item.id}`} className={styles.cardDetail__activity}>
               <strong>{entry.item.author.displayName}</strong> {describeActivity(entry.item, userNames)}
               {" · "}
               {new Date(entry.date).toLocaleString()}
@@ -170,7 +170,7 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
         )}
       </div>
 
-      <div className={styles.commentForm}>
+      <div className={styles.cardDetail__commentForm}>
         <textarea
           value={commentBody}
           onChange={(e) => setCommentBody(e.target.value)}

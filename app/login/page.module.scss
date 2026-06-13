@@ -1,11 +1,11 @@
-.page {
+.login {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
 }
 
-.card {
+.login__card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +16,7 @@
   text-align: center;
 }
 
-.button {
+.login__button {
   display: inline-flex;
   align-items: center;
   gap: 8px;

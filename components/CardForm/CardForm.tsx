@@ -18,7 +18,7 @@ interface Props {
 
 export default function CardForm({ values, onChange, users }: Props) {
   return (
-    <div className={styles.form}>
+    <div className={styles.cardForm}>
       <label>
         Title
         <input
