@@ -1,12 +1,19 @@
 .board {
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   min-width: 0;
+  min-height: 0;
+  padding: 16px;
 }
 
 .columns {
   display: flex;
+  justify-content: center;
   gap: 12px;
-  align-items: flex-start;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
   overflow-x: auto;
   padding-bottom: 8px;
 }
