@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getServerUser, getServerCards, getServerUsers } from "@/lib/server-api";
-import HomeView from "@/components/HomeView";
+import HomeView from "@/components/HomeView/HomeView";
 
 export default async function Home() {
   const userRes = await getServerUser();

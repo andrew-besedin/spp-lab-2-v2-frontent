@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { createCard } from "@/lib/api";
 import { User } from "@/lib/types";
-import Modal from "./Modal";
-import CardForm, { CardFormValues } from "./CardForm";
-import styles from "./CardDetailModal.module.scss";
+import Modal from "../Modal/Modal";
+import CardForm, { CardFormValues } from "../CardForm/CardForm";
+import styles from "./CreateCardModal.module.scss";
 
 interface Props {
   users: User[];

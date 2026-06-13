@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { logout as apiLogout } from "@/lib/api";
 import { Card, User } from "@/lib/types";
-import Board from "@/components/Board";
+import Board from "@/components/Board/Board";
 import styles from "@/app/page.module.scss";
 
 interface Props {

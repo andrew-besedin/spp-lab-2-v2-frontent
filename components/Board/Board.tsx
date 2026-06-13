@@ -4,9 +4,9 @@ import { useState } from "react";
 import { getCards, getUsers, updateCard } from "@/lib/api";
 import { Card, User } from "@/lib/types";
 import { COLUMN_ORDER, COLUMN_LABELS, ColumnStatus, canTransition } from "@/lib/columns";
-import Column from "./Column";
-import CreateCardModal from "./CreateCardModal";
-import CardDetailModal from "./CardDetailModal";
+import Column from "../Column/Column";
+import CreateCardModal from "../CreateCardModal/CreateCardModal";
+import CardDetailModal from "../CardDetailModal/CardDetailModal";
 import styles from "./Board.module.scss";
 
 interface Props {

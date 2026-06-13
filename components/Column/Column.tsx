@@ -3,7 +3,7 @@
 import { DragEvent } from "react";
 import { Card } from "@/lib/types";
 import { ColumnStatus } from "@/lib/columns";
-import CardItem from "./CardItem";
+import CardItem from "../CardItem/CardItem";
 import styles from "./Column.module.scss";
 
 interface Props {

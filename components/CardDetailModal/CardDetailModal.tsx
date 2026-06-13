@@ -5,8 +5,8 @@ import Image from "next/image";
 import { getCard, updateCard, addComment } from "@/lib/api";
 import { ActivityLogEntry, Card, User } from "@/lib/types";
 import { COLUMN_ORDER, COLUMN_LABELS, canTransition, ColumnStatus } from "@/lib/columns";
-import Modal from "./Modal";
-import CardForm, { CardFormValues } from "./CardForm";
+import Modal from "../Modal/Modal";
+import CardForm, { CardFormValues } from "../CardForm/CardForm";
 import styles from "./CardDetailModal.module.scss";
 
 interface Props {
