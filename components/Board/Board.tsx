@@ -1,105 +1,107 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { getCards, getUsers, updateCard } from "@/lib/api";
-import { getErrorMessage } from "@/lib/errors";
-import { Card, User } from "@/lib/types";
-import { COLUMN_ORDER, COLUMN_LABELS, ColumnStatus, canTransition } from "@/lib/columns";
-import Column from "../Column/Column";
-import CreateCardModal from "../CreateCardModal/CreateCardModal";
-import CardDetailModal from "../CardDetailModal/CardDetailModal";
-import styles from "./Board.module.scss";
+import { useState } from 'react';
+import { getCards, getUsers, updateCard } from '@/lib/api';
+import { getErrorMessage } from '@/lib/errors';
+import { Card, User } from '@/lib/types';
+import { COLUMN_ORDER, COLUMN_LABELS, ColumnStatus, canTransition } from '@/lib/columns';
+import Column from '../Column/Column';
+import CreateCardModal from '../CreateCardModal/CreateCardModal';
+import CardDetailModal from '../CardDetailModal/CardDetailModal';
+import styles from './Board.module.scss';
 
 interface Props {
-  initialCards: Card[];
-  initialUsers: User[];
+    initialCards: Card[];
+    initialUsers: User[];
 }
 
 export default function Board({ initialCards, initialUsers }: Props) {
-  const [cards, setCards] = useState<Card[]>(initialCards);
-  const [users, setUsers] = useState<User[]>(initialUsers);
-  const [error, setError] = useState<string | null>(null);
-  const [creating, setCreating] = useState(false);
-  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+    const [cards, setCards] = useState<Card[]>(initialCards);
+    const [users, setUsers] = useState<User[]>(initialUsers);
+    const [error, setError] = useState<string | null>(null);
+    const [creating, setCreating] = useState(false);
+    const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
-  async function refresh() {
-    const [cardsRes, usersRes] = await Promise.all([getCards(), getUsers()]);
+    async function refresh() {
+        const [cardsRes, usersRes] = await Promise.all([getCards(), getUsers()]);
 
-    if (!cardsRes.success) {
-      showError(getErrorMessage(cardsRes.data));
-      return;
+        if (!cardsRes.success) {
+            showError(getErrorMessage(cardsRes.data));
+            return;
+        }
+
+        if (!usersRes.success) {
+            showError(getErrorMessage(usersRes.data));
+            return;
+        }
+
+        setCards(cardsRes.data);
+        setUsers(usersRes.data);
     }
 
-    if (!usersRes.success) {
-      showError(getErrorMessage(usersRes.data));
-      return;
+    function showError(message: string) {
+        setError(message);
+        setTimeout(() => setError(null), 3000);
     }
 
-    setCards(cardsRes.data);
-    setUsers(usersRes.data);
-  }
+    async function handleDrop(cardId: number, targetStatus: ColumnStatus, targetIndex: number) {
+        const card = cards.find((c) => c.id === cardId);
+        if (!card) return;
 
-  function showError(message: string) {
-    setError(message);
-    setTimeout(() => setError(null), 3000);
-  }
+        if (!canTransition(card.status, targetStatus)) {
+            showError(getErrorMessage('INVALID_TRANSITION'));
+            return;
+        }
 
-  async function handleDrop(cardId: number, targetStatus: ColumnStatus, targetIndex: number) {
-    const card = cards.find((c) => c.id === cardId);
-    if (!card) return;
+        const res = await updateCard(cardId, { status: targetStatus, position: targetIndex });
 
-    if (!canTransition(card.status, targetStatus)) {
-      showError(getErrorMessage("INVALID_TRANSITION"));
-      return;
+        if (!res.success) {
+            showError(getErrorMessage(res.data));
+        }
+
+        if (res.success || res.data === 'CARD_NOT_FOUND' || res.data === 'INVALID_TRANSITION') {
+            await refresh();
+        }
     }
 
-    const res = await updateCard(cardId, { status: targetStatus, position: targetIndex });
+    return (
+        <div className={styles.board}>
+            {error && <div className={styles.board__error}>{error}</div>}
+            <div className={styles.board__columns}>
+                {COLUMN_ORDER.map((status) => (
+                    <Column
+                        key={status}
+                        status={status}
+                        title={COLUMN_LABELS[status]}
+                        cards={cards
+                            .filter((c) => c.status === status)
+                            .sort((a, b) => a.position - b.position)}
+                        onDropCard={handleDrop}
+                        onCardClick={setSelectedCardId}
+                        onAddCard={status === 'backlog' ? () => setCreating(true) : undefined}
+                    />
+                ))}
+            </div>
 
-    if (!res.success) {
-      showError(getErrorMessage(res.data));
-    }
+            {creating && (
+                <CreateCardModal
+                    users={users}
+                    onClose={() => setCreating(false)}
+                    onCreated={() => {
+                        setCreating(false);
+                        refresh();
+                    }}
+                />
+            )}
 
-    if (res.success || res.data === "CARD_NOT_FOUND" || res.data === "INVALID_TRANSITION") {
-      await refresh();
-    }
-  }
-
-  return (
-    <div className={styles.board}>
-      {error && <div className={styles.board__error}>{error}</div>}
-      <div className={styles.board__columns}>
-        {COLUMN_ORDER.map((status) => (
-          <Column
-            key={status}
-            status={status}
-            title={COLUMN_LABELS[status]}
-            cards={cards.filter((c) => c.status === status).sort((a, b) => a.position - b.position)}
-            onDropCard={handleDrop}
-            onCardClick={setSelectedCardId}
-            onAddCard={status === "backlog" ? () => setCreating(true) : undefined}
-          />
-        ))}
-      </div>
-
-      {creating && (
-        <CreateCardModal
-          users={users}
-          onClose={() => setCreating(false)}
-          onCreated={() => {
-            setCreating(false);
-            refresh();
-          }}
-        />
-      )}
-
-      {selectedCardId !== null && (
-        <CardDetailModal
-          cardId={selectedCardId}
-          users={users}
-          onClose={() => setSelectedCardId(null)}
-          onChanged={refresh}
-        />
-      )}
-    </div>
-  );
+            {selectedCardId !== null && (
+                <CardDetailModal
+                    cardId={selectedCardId}
+                    users={users}
+                    onClose={() => setSelectedCardId(null)}
+                    onChanged={refresh}
+                />
+            )}
+        </div>
+    );
 }

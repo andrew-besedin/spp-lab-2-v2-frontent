@@ -1,18 +1,18 @@
-export const COLUMN_ORDER = ["backlog", "todo", "in_progress", "review", "done"] as const;
+export const COLUMN_ORDER = ['backlog', 'todo', 'in_progress', 'review', 'done'] as const;
 
-export type ColumnStatus = typeof COLUMN_ORDER[number];
+export type ColumnStatus = (typeof COLUMN_ORDER)[number];
 
 export const COLUMN_LABELS: Record<ColumnStatus, string> = {
-    backlog: "Backlog",
-    todo: "Todo",
-    in_progress: "In Progress",
-    review: "Review",
-    done: "Done",
+    backlog: 'Backlog',
+    todo: 'Todo',
+    in_progress: 'In Progress',
+    review: 'Review',
+    done: 'Done',
 };
 
 export function canTransition(from: ColumnStatus, to: ColumnStatus): boolean {
     if (from === to) return true;
-    if (from === "done") return false;
+    if (from === 'done') return false;
 
     const diff = Math.abs(COLUMN_ORDER.indexOf(to) - COLUMN_ORDER.indexOf(from));
     return diff === 1;

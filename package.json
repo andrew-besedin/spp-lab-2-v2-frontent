@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "eslint": "eslint . --ext .js,.ts,.tsx,.jsx,.cjs,.mjs --fix"
   },
   "dependencies": {
     "axios": "^1.17.0",

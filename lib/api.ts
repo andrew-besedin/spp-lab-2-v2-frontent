@@ -1,52 +1,57 @@
-import axios from "axios";
-import { Card, Comment, Priority, User } from "./types";
-import { ColumnStatus } from "./columns";
+import axios from 'axios';
+import { Card, Comment, Priority, User } from './types';
+import { ColumnStatus } from './columns';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 const client = axios.create({
     baseURL: `${API_URL}/api`,
     withCredentials: true,
-    headers: { "Content-Type": "application/json" },
+    headers: { 'Content-Type': 'application/json' },
     validateStatus: () => true,
 });
 
-type ApiResponse<T> = {
-    success: true;
-    data: T;
-} | {
-    success: false;
-    data: string;
-}
+type ApiResponse<T> =
+    | {
+          success: true;
+          data: T;
+      }
+    | {
+          success: false;
+          data: string;
+      };
 
-async function apiFetch<T>(path: string, options?: { method?: string; body?: unknown }): Promise<ApiResponse<T>> {
+async function apiFetch<T>(
+    path: string,
+    options?: { method?: string; body?: unknown },
+): Promise<ApiResponse<T>> {
     try {
         const res = await client.request<ApiResponse<T>>({
             url: path,
-            method: options?.method ?? "GET",
+            method: options?.method ?? 'GET',
             data: options?.body,
         });
 
         if (res.status === 401) {
-            return { success: false, data: "UNAUTHORIZED" };
+            return { success: false, data: 'UNAUTHORIZED' };
         }
 
         return res.data;
     } catch {
-        return { success: false, data: "NETWORK_ERROR" };
+        return { success: false, data: 'NETWORK_ERROR' };
     }
 }
 
 export function getMe() {
-    return apiFetch<User | null>("/auth/me");
+    return apiFetch<User | null>('/auth/me');
 }
 
 export function logout() {
-    return apiFetch<null>("/auth/logout", { method: "POST" });
+    return apiFetch<null>('/auth/logout', { method: 'POST' });
 }
 
 export function getCards() {
-    return apiFetch<Card[]>("/cards");
+    return apiFetch<Card[]>('/cards');
 }
 
 export function getCard(id: number) {
@@ -61,8 +66,8 @@ export interface CreateCardInput {
 }
 
 export function createCard(input: CreateCardInput) {
-    return apiFetch<Card>("/cards", {
-        method: "POST",
+    return apiFetch<Card>('/cards', {
+        method: 'POST',
         body: input,
     });
 }
@@ -78,20 +83,20 @@ export interface UpdateCardInput {
 
 export function updateCard(id: number, input: UpdateCardInput) {
     return apiFetch<Card>(`/cards/${id}`, {
-        method: "PATCH",
+        method: 'PATCH',
         body: input,
     });
 }
 
 export function addComment(cardId: number, body: string) {
     return apiFetch<Comment>(`/cards/${cardId}/comments`, {
-        method: "POST",
+        method: 'POST',
         body: { body },
     });
 }
 
 export function getUsers() {
-    return apiFetch<User[]>("/users");
+    return apiFetch<User[]>('/users');
 }
 
 export function githubLoginUrl() {

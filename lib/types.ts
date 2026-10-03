@@ -1,6 +1,6 @@
-import { ColumnStatus } from "./columns";
+import { ColumnStatus } from './columns';
 
-export type Priority = "low" | "medium" | "high" | "urgent";
+export type Priority = 'low' | 'medium' | 'high' | 'urgent';
 
 export interface User {
     id: number;
@@ -19,12 +19,12 @@ export interface Comment {
 }
 
 export type ActivityAction =
-    | "created"
-    | "title_changed"
-    | "description_changed"
-    | "priority_changed"
-    | "assignee_changed"
-    | "status_changed";
+    | 'created'
+    | 'title_changed'
+    | 'description_changed'
+    | 'priority_changed'
+    | 'assignee_changed'
+    | 'status_changed';
 
 export interface ActivityLogEntry {
     id: number;
