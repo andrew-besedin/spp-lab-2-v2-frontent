@@ -1,6 +1,13 @@
 .createCardModal__error {
   color: #f44336;
   font-size: 13px;
+  line-height: 1.4;
+  padding: 8px 12px;
+  margin: 12px 0;
+  border: 1px solid rgba(244, 67, 54, 0.4);
+  border-radius: 4px;
+  background: rgba(244, 67, 54, 0.1);
+  overflow-wrap: break-word;
 }
 
 .createCardModal__actions {
