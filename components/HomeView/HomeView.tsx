@@ -27,7 +27,7 @@ export default function HomeView({ user, initialCards, initialUsers }: Props) {
       <header className={styles.page__header}>
         <h1>Kanban</h1>
         <div className={styles.page__user}>
-          <Image src={user.avatarUrl} alt={user.displayName} width={28} height={28} />
+          <Image src={user.avatarUrl} alt={user.displayName} width={28} height={28} unoptimized />
           <span>{user.displayName}</span>
           <button onClick={handleLogout}>Logout</button>
         </div>

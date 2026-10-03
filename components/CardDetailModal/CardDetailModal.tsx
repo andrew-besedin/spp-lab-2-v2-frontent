@@ -151,7 +151,7 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
         {timeline.map((entry) =>
           entry.type === "comment" ? (
             <div key={`comment-${entry.item.id}`} className={styles.cardDetail__comment}>
-              <Image src={entry.item.author.avatarUrl} alt={entry.item.author.displayName} width={28} height={28} />
+              <Image src={entry.item.author.avatarUrl} alt={entry.item.author.displayName} width={28} height={28} unoptimized />
               <div>
                 <div className={styles.cardDetail__commentHeader}>
                   <strong>{entry.item.author.displayName}</strong>

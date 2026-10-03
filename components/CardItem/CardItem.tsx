@@ -27,7 +27,7 @@ export default function CardItem({ card, onClick }: { card: Card; onClick: () =>
         </span>
         {card.assignee && (
           <span className={styles.cardItem__assignee} title={card.assignee.displayName}>
-            <Image src={card.assignee.avatarUrl} alt={card.assignee.displayName} width={22} height={22} />
+            <Image src={card.assignee.avatarUrl} alt={card.assignee.displayName} width={22} height={22} unoptimized />
           </span>
         )}
       </div>
