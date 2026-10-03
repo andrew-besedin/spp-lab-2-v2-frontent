@@ -11,9 +11,12 @@ const client = axios.create({
     validateStatus: () => true,
 });
 
-interface ApiResponse<T> {
-    success: boolean;
+type ApiResponse<T> = {
+    success: true;
     data: T;
+} | {
+    success: false;
+    data: string;
 }
 
 async function apiFetch<T>(path: string, options?: { method?: string; body?: unknown }): Promise<ApiResponse<T>> {
@@ -25,12 +28,12 @@ async function apiFetch<T>(path: string, options?: { method?: string; body?: unk
         });
 
         if (res.status === 401) {
-            return { success: false, data: null as T };
+            return { success: false, data: "UNAUTHORIZED" };
         }
 
         return res.data;
     } catch {
-        return { success: false, data: null as T };
+        return { success: false, data: "NETWORK_ERROR" };
     }
 }
 
