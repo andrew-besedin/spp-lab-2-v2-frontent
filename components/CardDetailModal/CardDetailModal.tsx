@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { getCard, updateCard, addComment } from "@/lib/api";
+import { getErrorMessage } from "@/lib/errors";
 import { ActivityLogEntry, Card, User } from "@/lib/types";
 import { COLUMN_ORDER, COLUMN_LABELS, canTransition, ColumnStatus } from "@/lib/columns";
 import Modal from "../Modal/Modal";
@@ -45,18 +46,32 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
   const [values, setValues] = useState<CardFormValues | null>(null);
   const [commentBody, setCommentBody] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   async function load() {
     const res = await getCard(cardId);
-    if (res.success) {
-      setCard(res.data);
-      setValues({
-        title: res.data.title,
-        description: res.data.description,
-        priority: res.data.priority,
-        assigneeId: res.data.assigneeId,
-      });
+
+    if (!res.success) {
+      setLoadError(getErrorMessage(res.data));
+      return;
+    }
+
+    setLoadError(null);
+    setCard(res.data);
+    setValues({
+      title: res.data.title,
+      description: res.data.description,
+      priority: res.data.priority,
+      assigneeId: res.data.assigneeId,
+    });
+  }
+
+  function handleFailure(code: string) {
+    setError(getErrorMessage(code));
+
+    if (code === "CARD_NOT_FOUND") {
+      onChanged();
     }
   }
 
@@ -69,6 +84,7 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
   async function handleSave() {
     if (!values) return;
 
+    setError(null);
     setSaving(true);
     const res = await updateCard(cardId, values);
     setSaving(false);
@@ -77,7 +93,7 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
       await load();
       onChanged();
     } else {
-      setError(String(res.data));
+      handleFailure(res.data);
     }
   }
 
@@ -89,19 +105,39 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
       await load();
       onChanged();
     } else {
-      setError(String(res.data));
+      handleFailure(res.data);
+
+      if (res.data === "INVALID_TRANSITION") {
+        await load();
+        onChanged();
+      }
     }
   }
 
   async function handleAddComment() {
     if (!commentBody.trim()) return;
 
+    setError(null);
     const res = await addComment(cardId, commentBody);
 
     if (res.success) {
       setCommentBody("");
       await load();
+    } else {
+      handleFailure(res.data);
     }
+  }
+
+  if (loadError) {
+    return (
+      <Modal onClose={onClose}>
+        <p className={styles.cardDetail__error}>{loadError}</p>
+        <div className={styles.cardDetail__actions}>
+          <button onClick={load}>Try again</button>
+          <button onClick={onClose}>Close</button>
+        </div>
+      </Modal>
+    );
   }
 
   if (!card || !values) {

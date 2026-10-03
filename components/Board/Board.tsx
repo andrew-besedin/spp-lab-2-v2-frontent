@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { getCards, getUsers, updateCard } from "@/lib/api";
+import { getErrorMessage } from "@/lib/errors";
 import { Card, User } from "@/lib/types";
 import { COLUMN_ORDER, COLUMN_LABELS, ColumnStatus, canTransition } from "@/lib/columns";
 import Column from "../Column/Column";
@@ -23,8 +24,19 @@ export default function Board({ initialCards, initialUsers }: Props) {
 
   async function refresh() {
     const [cardsRes, usersRes] = await Promise.all([getCards(), getUsers()]);
-    if (cardsRes.success) setCards(cardsRes.data);
-    if (usersRes.success) setUsers(usersRes.data);
+
+    if (!cardsRes.success) {
+      showError(getErrorMessage(cardsRes.data));
+      return;
+    }
+
+    if (!usersRes.success) {
+      showError(getErrorMessage(usersRes.data));
+      return;
+    }
+
+    setCards(cardsRes.data);
+    setUsers(usersRes.data);
   }
 
   function showError(message: string) {
@@ -37,16 +49,18 @@ export default function Board({ initialCards, initialUsers }: Props) {
     if (!card) return;
 
     if (!canTransition(card.status, targetStatus)) {
-      showError("That move isn't allowed: columns can't be skipped and cards can't leave Done.");
+      showError(getErrorMessage("INVALID_TRANSITION"));
       return;
     }
 
     const res = await updateCard(cardId, { status: targetStatus, position: targetIndex });
 
-    if (res.success) {
+    if (!res.success) {
+      showError(getErrorMessage(res.data));
+    }
+
+    if (res.success || res.data === "CARD_NOT_FOUND" || res.data === "INVALID_TRANSITION") {
       await refresh();
-    } else {
-      showError(String(res.data));
     }
   }
 

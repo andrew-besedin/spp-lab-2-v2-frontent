@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createCard } from "@/lib/api";
+import { getErrorMessage } from "@/lib/errors";
 import { User } from "@/lib/types";
 import Modal from "../Modal/Modal";
 import CardForm, { CardFormValues } from "../CardForm/CardForm";
@@ -36,7 +37,7 @@ export default function CreateCardModal({ users, onClose, onCreated }: Props) {
     if (res.success) {
       onCreated();
     } else {
-      setError(String(res.data));
+      setError(getErrorMessage(res.data));
     }
   }
 
