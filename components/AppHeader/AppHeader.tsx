@@ -4,8 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { logout as apiLogout } from '@/lib/api';
-import { CurrentUser } from '@/lib/types';
+import { CurrentUser, UserRole } from '@/lib/types';
 import styles from './AppHeader.module.scss';
+
+const ROLE_LABELS: Record<UserRole, string> = {
+    user: 'User',
+    moderator: 'Moderator',
+    admin: 'Admin',
+};
 
 interface Props {
     user: CurrentUser;
@@ -57,6 +63,13 @@ export default function AppHeader({ user }: Props) {
                     unoptimized
                 />
                 <span>{user.displayName}</span>
+                {user.role !== 'user' && (
+                    <span
+                        className={`${styles.header__role} ${styles[`header__role--${user.role}`]}`}
+                    >
+                        {ROLE_LABELS[user.role]}
+                    </span>
+                )}
                 <button onClick={handleLogout}>Logout</button>
             </div>
         </header>
