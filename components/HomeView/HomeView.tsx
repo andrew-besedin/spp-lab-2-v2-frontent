@@ -13,7 +13,7 @@ export default function HomeView({ user, initialCards, initialUsers }: Props) {
     return (
         <div className={styles.page}>
             <AppHeader user={user} />
-            <Board initialCards={initialCards} initialUsers={initialUsers} />
+            <Board user={user} initialCards={initialCards} initialUsers={initialUsers} />
         </div>
     );
 }

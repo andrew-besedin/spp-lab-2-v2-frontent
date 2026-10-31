@@ -14,11 +14,12 @@ interface Props {
     values: CardFormValues;
     onChange: (values: CardFormValues) => void;
     users: User[];
+    disabled?: boolean;
 }
 
-export default function CardForm({ values, onChange, users }: Props) {
+export default function CardForm({ values, onChange, users, disabled = false }: Props) {
     return (
-        <div className={styles.cardForm}>
+        <fieldset className={styles.cardForm} disabled={disabled}>
             <label>
                 Title
                 <input
@@ -64,6 +65,6 @@ export default function CardForm({ values, onChange, users }: Props) {
                     ))}
                 </select>
             </label>
-        </div>
+        </fieldset>
     );
 }

@@ -35,6 +35,15 @@
   overflow-wrap: break-word;
 }
 
+.cardDetail__readonly {
+  font-size: 13px;
+  line-height: 1.4;
+  padding: 8px 12px;
+  margin: 12px 0;
+  border-radius: 4px;
+  background: rgba(128, 128, 128, 0.12);
+}
+
 .cardDetail__actions {
   display: flex;
   gap: 8px;

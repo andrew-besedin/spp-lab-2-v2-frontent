@@ -10,6 +10,7 @@ interface Props {
     status: ColumnStatus;
     title: string;
     cards: Card[];
+    canDragCard: (card: Card) => boolean;
     onDropCard: (cardId: number, status: ColumnStatus, index: number) => void;
     onCardClick: (id: number) => void;
     onAddCard?: () => void;
@@ -19,6 +20,7 @@ export default function Column({
     status,
     title,
     cards,
+    canDragCard,
     onDropCard,
     onCardClick,
     onAddCard,
@@ -61,7 +63,11 @@ export default function Column({
                         onDragOver={handleDragOver}
                         onDrop={(e) => handleDrop(e, index)}
                     >
-                        <CardItem card={card} onClick={() => onCardClick(card.id)} />
+                        <CardItem
+                            card={card}
+                            draggable={canDragCard(card)}
+                            onClick={() => onCardClick(card.id)}
+                        />
                     </div>
                 ))}
             </div>

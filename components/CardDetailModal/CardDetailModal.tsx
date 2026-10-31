@@ -4,14 +4,16 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getCard, updateCard, addComment } from '@/lib/api';
 import { getErrorMessage } from '@/lib/errors';
-import { ActivityLogEntry, Card, User } from '@/lib/types';
+import { ActivityLogEntry, Card, CurrentUser, User } from '@/lib/types';
 import { COLUMN_ORDER, COLUMN_LABELS, canTransition, ColumnStatus } from '@/lib/columns';
+import { canManageCard } from '@/lib/permissions';
 import Modal from '../Modal/Modal';
 import CardForm, { CardFormValues } from '../CardForm/CardForm';
 import styles from './CardDetailModal.module.scss';
 
 interface Props {
     cardId: number;
+    currentUser: CurrentUser;
     users: User[];
     onClose: () => void;
     onChanged: () => void;
@@ -41,7 +43,7 @@ function describeActivity(entry: ActivityLogEntry, userNames: Map<number, string
     }
 }
 
-export default function CardDetailModal({ cardId, users, onClose, onChanged }: Props) {
+export default function CardDetailModal({ cardId, currentUser, users, onClose, onChanged }: Props) {
     const [card, setCard] = useState<Card | null>(null);
     const [values, setValues] = useState<CardFormValues | null>(null);
     const [commentBody, setCommentBody] = useState('');
@@ -71,6 +73,11 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
         setError(getErrorMessage(code));
 
         if (code === 'CARD_NOT_FOUND') {
+            onChanged();
+        }
+
+        if (code === 'FORBIDDEN') {
+            load();
             onChanged();
         }
     }
@@ -162,6 +169,7 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
         })),
     ].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
+    const canEdit = canManageCard(currentUser, card);
     const currentIndex = COLUMN_ORDER.indexOf(card.status);
     const prevStatus = currentIndex > 0 ? COLUMN_ORDER[currentIndex - 1] : null;
     const nextStatus =
@@ -174,24 +182,33 @@ export default function CardDetailModal({ cardId, users, onClose, onChanged }: P
                 <span className={styles.cardDetail__status}>{COLUMN_LABELS[card.status]}</span>
             </div>
 
-            <CardForm values={values} onChange={setValues} users={users} />
+            <CardForm values={values} onChange={setValues} users={users} disabled={!canEdit} />
+
+            {!canEdit && (
+                <p className={styles.cardDetail__readonly}>
+                    Only the card&apos;s creator, its assignee, or a moderator can edit or move this
+                    card. You can still leave a comment.
+                </p>
+            )}
 
             {error && <p className={styles.cardDetail__error}>{error}</p>}
 
             <div className={styles.cardDetail__actions}>
-                {prevStatus && canTransition(card.status, prevStatus) && (
+                {canEdit && prevStatus && canTransition(card.status, prevStatus) && (
                     <button onClick={() => handleMove(prevStatus)}>
                         ← {COLUMN_LABELS[prevStatus]}
                     </button>
                 )}
-                {nextStatus && canTransition(card.status, nextStatus) && (
+                {canEdit && nextStatus && canTransition(card.status, nextStatus) && (
                     <button onClick={() => handleMove(nextStatus)}>
                         {COLUMN_LABELS[nextStatus]} →
                     </button>
                 )}
-                <button onClick={handleSave} disabled={saving}>
-                    Save
-                </button>
+                {canEdit && (
+                    <button onClick={handleSave} disabled={saving}>
+                        Save
+                    </button>
+                )}
                 <button onClick={onClose}>Close</button>
             </div>
 

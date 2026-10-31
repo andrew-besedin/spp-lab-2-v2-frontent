@@ -12,14 +12,27 @@ const PRIORITY_LABELS: Record<Card['priority'], string> = {
     urgent: 'Urgent',
 };
 
-export default function CardItem({ card, onClick }: { card: Card; onClick: () => void }) {
+interface Props {
+    card: Card;
+    draggable: boolean;
+    onClick: () => void;
+}
+
+export default function CardItem({ card, draggable, onClick }: Props) {
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
         e.dataTransfer.setData('text/plain', String(card.id));
         e.dataTransfer.effectAllowed = 'move';
     }
 
     return (
-        <div className={styles.cardItem} draggable onDragStart={handleDragStart} onClick={onClick}>
+        <div
+            className={
+                draggable ? styles.cardItem : `${styles.cardItem} ${styles['cardItem--locked']}`
+            }
+            draggable={draggable}
+            onDragStart={draggable ? handleDragStart : undefined}
+            onClick={onClick}
+        >
             <div className={styles.cardItem__title}>{card.title}</div>
             <div className={styles.cardItem__meta}>
                 <span

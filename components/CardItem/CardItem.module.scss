@@ -15,6 +15,10 @@
   }
 }
 
+.cardItem--locked {
+  cursor: pointer;
+}
+
 .cardItem__title {
   font-size: 14px;
   font-weight: 600;
