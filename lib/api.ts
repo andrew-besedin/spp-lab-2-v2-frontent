@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Card, Comment, Priority, User } from './types';
+import { AdminUser, AssignableRole, Card, Comment, CurrentUser, Priority, User } from './types';
 import { ColumnStatus } from './columns';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
@@ -43,7 +43,7 @@ async function apiFetch<T>(
 }
 
 export function getMe() {
-    return apiFetch<User | null>('/auth/me');
+    return apiFetch<CurrentUser | null>('/auth/me');
 }
 
 export function logout() {
@@ -97,6 +97,17 @@ export function addComment(cardId: number, body: string) {
 
 export function getUsers() {
     return apiFetch<User[]>('/users');
+}
+
+export function getAdminUsers() {
+    return apiFetch<AdminUser[]>('/admin/users');
+}
+
+export function updateUserRole(userId: number, role: AssignableRole) {
+    return apiFetch<AdminUser>(`/admin/users/${userId}/role`, {
+        method: 'PATCH',
+        body: { role },
+    });
 }
 
 export function githubLoginUrl() {

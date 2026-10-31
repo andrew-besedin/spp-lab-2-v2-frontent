@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { cookies } from 'next/headers';
-import { Card, User } from './types';
+import { AdminUser, Card, CurrentUser, User } from './types';
 
 const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -39,7 +39,7 @@ async function serverApiFetch<T>(path: string): Promise<ApiResponse<T>> {
 }
 
 export function getServerUser() {
-    return serverApiFetch<User | null>('/auth/me');
+    return serverApiFetch<CurrentUser | null>('/auth/me');
 }
 
 export function getServerCards() {
@@ -48,4 +48,8 @@ export function getServerCards() {
 
 export function getServerUsers() {
     return serverApiFetch<User[]>('/users');
+}
+
+export function getServerAdminUsers() {
+    return serverApiFetch<AdminUser[]>('/admin/users');
 }

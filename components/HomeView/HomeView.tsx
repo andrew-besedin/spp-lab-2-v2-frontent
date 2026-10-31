@@ -1,43 +1,18 @@
-'use client';
-
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { logout as apiLogout } from '@/lib/api';
-import { Card, User } from '@/lib/types';
+import { Card, CurrentUser, User } from '@/lib/types';
+import AppHeader from '@/components/AppHeader/AppHeader';
 import Board from '@/components/Board/Board';
 import styles from '@/app/page.module.scss';
 
 interface Props {
-    user: User;
+    user: CurrentUser;
     initialCards: Card[];
     initialUsers: User[];
 }
 
 export default function HomeView({ user, initialCards, initialUsers }: Props) {
-    const router = useRouter();
-
-    async function handleLogout() {
-        await apiLogout();
-        router.replace('/login');
-        router.refresh();
-    }
-
     return (
         <div className={styles.page}>
-            <header className={styles.page__header}>
-                <h1>Kanban</h1>
-                <div className={styles.page__user}>
-                    <Image
-                        src={user.avatarUrl}
-                        alt={user.displayName}
-                        width={28}
-                        height={28}
-                        unoptimized
-                    />
-                    <span>{user.displayName}</span>
-                    <button onClick={handleLogout}>Logout</button>
-                </div>
-            </header>
+            <AppHeader user={user} />
             <Board initialCards={initialCards} initialUsers={initialUsers} />
         </div>
     );

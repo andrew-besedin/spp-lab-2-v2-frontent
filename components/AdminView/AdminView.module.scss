@@ -1,0 +1,18 @@
+.admin {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px 16px;
+}
+
+.admin__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 880px;
+    margin: 0 auto;
+}
+
+.admin__title {
+    font-size: 22px;
+}

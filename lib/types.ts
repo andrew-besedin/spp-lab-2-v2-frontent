@@ -2,11 +2,24 @@ import { ColumnStatus } from './columns';
 
 export type Priority = 'low' | 'medium' | 'high' | 'urgent';
 
+export type UserRole = 'user' | 'moderator' | 'admin';
+
+export type AssignableRole = Exclude<UserRole, 'admin'>;
+
 export interface User {
     id: number;
     username: string;
     displayName: string;
     avatarUrl: string;
+}
+
+export interface CurrentUser extends User {
+    role: UserRole;
+}
+
+export interface AdminUser extends User {
+    role: UserRole;
+    createdAt: string;
 }
 
 export interface Comment {

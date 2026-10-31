@@ -7,6 +7,9 @@ const ERROR_MESSAGES: Record<string, string> = {
     INTERNAL_SERVER_ERROR: 'Something went wrong on the server. Please try again later.',
     NETWORK_ERROR: "Can't reach the server. Check your connection and try again.",
     GITHUB_AUTH_FAILED: 'Signing in with GitHub failed. Please try again.',
+    FORBIDDEN: "You don't have permission to do that.",
+    USER_NOT_FOUND: 'This user no longer exists.',
+    ADMIN_ROLE_LOCKED: "An admin's role can't be changed from the admin panel.",
 };
 
 export function getErrorMessage(code: string): string {
