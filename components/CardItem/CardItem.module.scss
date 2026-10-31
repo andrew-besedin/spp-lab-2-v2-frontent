@@ -1,72 +1,72 @@
 .cardItem {
-  background: var(--background);
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 10px;
-  cursor: grab;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  max-width: 100%;
+    background: var(--background);
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    cursor: grab;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    max-width: 100%;
 
-  &:hover {
-    border-color: #999;
-  }
+    &:hover {
+        border-color: #999;
+    }
 }
 
 .cardItem--locked {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .cardItem__title {
-  font-size: 14px;
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    font-size: 14px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .cardItem__meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .cardItem__priority {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: #fff;
-  flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #fff;
+    flex-shrink: 0;
 
-  &--low {
-    background: #4caf50;
-  }
+    &--low {
+        background: #4caf50;
+    }
 
-  &--medium {
-    background: #2196f3;
-  }
+    &--medium {
+        background: #2196f3;
+    }
 
-  &--high {
-    background: #ff9800;
-  }
+    &--high {
+        background: #ff9800;
+    }
 
-  &--urgent {
-    background: #f44336;
-  }
+    &--urgent {
+        background: #f44336;
+    }
 }
 
 .cardItem__assignee {
-  flex-shrink: 0;
+    flex-shrink: 0;
 
-  img {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: block;
-  }
+    img {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: block;
+    }
 }

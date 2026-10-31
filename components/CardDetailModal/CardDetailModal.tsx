@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getCard, updateCard, addComment } from '@/lib/api';
 import { getErrorMessage } from '@/lib/errors';
@@ -51,7 +51,7 @@ export default function CardDetailModal({ cardId, currentUser, users, onClose, o
     const [loadError, setLoadError] = useState<string | null>(null);
     const [saving, setSaving] = useState(false);
 
-    async function load() {
+    const load = useCallback(async () => {
         const res = await getCard(cardId);
 
         if (!res.success) {
@@ -67,7 +67,7 @@ export default function CardDetailModal({ cardId, currentUser, users, onClose, o
             priority: res.data.priority,
             assigneeId: res.data.assigneeId,
         });
-    }
+    }, [cardId]);
 
     function handleFailure(code: string) {
         setError(getErrorMessage(code));
@@ -86,7 +86,7 @@ export default function CardDetailModal({ cardId, currentUser, users, onClose, o
         (async () => {
             await load();
         })();
-    }, [cardId]);
+    }, [load]);
 
     async function handleSave() {
         if (!values) return;

@@ -1,32 +1,32 @@
 .createCardModal__error {
-  color: #f44336;
-  font-size: 13px;
-  line-height: 1.4;
-  padding: 8px 12px;
-  margin: 12px 0;
-  border: 1px solid rgba(244, 67, 54, 0.4);
-  border-radius: 4px;
-  background: rgba(244, 67, 54, 0.1);
-  overflow-wrap: break-word;
+    color: #f44336;
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 8px 12px;
+    margin: 12px 0;
+    border: 1px solid rgba(244, 67, 54, 0.4);
+    border-radius: 4px;
+    background: rgba(244, 67, 54, 0.1);
+    overflow-wrap: break-word;
 }
 
 .createCardModal__actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
 
-  button {
-    font: inherit;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: var(--background);
-    color: var(--foreground);
-    cursor: pointer;
+    button {
+        font: inherit;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: var(--background);
+        color: var(--foreground);
+        cursor: pointer;
 
-    &:hover {
-      border-color: #999;
+        &:hover {
+            border-color: #999;
+        }
     }
-  }
 }
